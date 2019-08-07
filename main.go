@@ -29,6 +29,12 @@ func PrettyJsonPrint(something interface{}) {
 	fmt.Println(string(j))
 }
 
+func JsonPrint(something interface{}) {
+	j, err := json.Marshal(something)
+	CheckErr(err)
+	fmt.Println(string(j))
+}
+
 func Equal(expected interface{}, actual interface{}, msgAndArgs ...interface{}) bool {
 	return should.Equal(expected, actual, msgAndArgs...)
 }
