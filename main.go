@@ -5,7 +5,14 @@ import (
 	"fmt"
 )
 
+func CheckErr(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
 func PrettyJsonPrint(something interface{}) {
-	j, _ := json.MarshalIndent(something, "", "\t")
+	j, err := json.MarshalIndent(something, "", "\t")
+	CheckErr(err)
 	fmt.Println(string(j))
 }
