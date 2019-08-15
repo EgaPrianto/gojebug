@@ -3,6 +3,8 @@ package gojebug
 import (
 	"encoding/json"
 	"fmt"
+	"io"
+	"io/ioutil"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -37,4 +39,10 @@ func JsonPrint(something interface{}) {
 
 func Equal(expected interface{}, actual interface{}, msgAndArgs ...interface{}) bool {
 	return should.Equal(expected, actual, msgAndArgs...)
+}
+
+func PrintReaderContent(reader io.Reader) {
+	b, err := ioutil.ReadAll(reader)
+	CheckErr(err)
+	fmt.Println(string(b))
 }
