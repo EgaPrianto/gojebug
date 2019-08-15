@@ -25,24 +25,30 @@ func (t TLogger) Errorf(format string, args ...interface{}) {
 	panic(fmt.Sprintf(format, args...))
 }
 
-func PrettyJsonPrint(something interface{}) {
+func PrettyJsonPrint(something interface{}) string {
 	j, err := json.MarshalIndent(something, "", "\t")
 	CheckErr(err)
-	fmt.Println(string(j))
+	res := string(j)
+	fmt.Println(res)
+	return res
 }
 
-func JsonPrint(something interface{}) {
+func JsonPrint(something interface{}) string {
 	j, err := json.Marshal(something)
 	CheckErr(err)
-	fmt.Println(string(j))
+	res := string(j)
+	fmt.Println(res)
+	return res
 }
 
 func Equal(expected interface{}, actual interface{}, msgAndArgs ...interface{}) bool {
 	return should.Equal(expected, actual, msgAndArgs...)
 }
 
-func PrintReaderContent(reader io.Reader) {
+func PrintReaderContent(reader io.Reader) string{
 	b, err := ioutil.ReadAll(reader)
 	CheckErr(err)
-	fmt.Println(string(b))
+	res := string(b)
+	fmt.Println(res)
+	return res
 }
