@@ -60,11 +60,16 @@ func printReaderContent(reader io.Reader) string {
 func PrintReaderContent(reader io.Reader) string {
 	return print(printReaderContent(reader))
 }
-func PrintReaderContentJSON(reader io.Reader) string {
+
+func printReaderContentJSON(reader io.Reader) string {
 	var res map[string]interface{}
 	err := json.Unmarshal([]byte(printReaderContent(reader)), &res)
 	CheckErr(err)
-	return PrettyJsonPrint(res)
+	return prettyJsonPrint(res)
+}
+
+func PrintReaderContentJSON(reader io.Reader) string {
+	return print(printReaderContentJSON(reader))
 }
 
 func PrintRequest(r http.Request) string {
@@ -79,6 +84,6 @@ func printRequest(r http.Request) string {
 	res += fmt.Sprintf("======%s================================\n", "QUERY PARAMS")
 	res += prettyJsonPrint(r.URL.Query()) + "\n"
 	res += fmt.Sprintf("======%s================================\n", "BODY")
-	res += printReaderContent(r.Body) + "\n"
+	res += printReaderContentJSON(r.Body) + "\n"
 	return res
 }
