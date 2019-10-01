@@ -15,9 +15,7 @@ var (
 )
 
 func CheckErr(err error) {
-	if err != nil {
-		panic(err)
-	}
+	should.NoError(err)
 }
 
 func print(in string) string {
@@ -61,6 +59,12 @@ func printReaderContent(reader io.Reader) string {
 
 func PrintReaderContent(reader io.Reader) string {
 	return print(printReaderContent(reader))
+}
+func PrintReaderContentJSON(reader io.Reader) string {
+	var res map[string]interface{}
+	err := json.Unmarshal([]byte(printReaderContent(reader)), &res)
+	CheckErr(err)
+	return PrettyJsonPrint(res)
 }
 
 func PrintRequest(r http.Request) string {
