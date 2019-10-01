@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"net/http"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -19,18 +20,25 @@ func CheckErr(err error) {
 	}
 }
 
+func print(in string) string {
+	fmt.Println(in)
+	return in
+}
+
 type TLogger struct{}
 
 func (t TLogger) Errorf(format string, args ...interface{}) {
 	panic(fmt.Sprintf(format, args...))
 }
 
-func PrettyJsonPrint(something interface{}) string {
+func prettyJsonPrint(something interface{}) string {
 	j, err := json.MarshalIndent(something, "", "\t")
 	CheckErr(err)
-	res := string(j)
-	fmt.Println(res)
-	return res
+	return string(j)
+}
+
+func PrettyJsonPrint(something interface{}) string {
+	return print(prettyJsonPrint(something))
 }
 
 func JsonPrint(something interface{}) string {
@@ -45,10 +53,28 @@ func Equal(expected interface{}, actual interface{}, msgAndArgs ...interface{}) 
 	return should.Equal(expected, actual, msgAndArgs...)
 }
 
-func PrintReaderContent(reader io.Reader) string{
+func printReaderContent(reader io.Reader) string {
 	b, err := ioutil.ReadAll(reader)
 	CheckErr(err)
-	res := string(b)
-	fmt.Println(res)
+	return string(b)
+}
+
+func PrintReaderContent(reader io.Reader) string {
+	return print(printReaderContent(reader))
+}
+
+func PrintRequest(r http.Request) string {
+	return print(printRequest(r))
+}
+
+func printRequest(r http.Request) string {
+	var res string
+	res += "METHOD = " + r.Method + "\n"
+	res += fmt.Sprintf("======%s================================\n", "URL")
+	res += r.URL.String() + "\n"
+	res += fmt.Sprintf("======%s================================\n", "QUERY PARAMS")
+	res += prettyJsonPrint(r.URL.Query()) + "\n"
+	res += fmt.Sprintf("======%s================================\n", "BODY")
+	res += printReaderContent(r.Body) + "\n"
 	return res
 }
