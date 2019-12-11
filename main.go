@@ -30,7 +30,7 @@ func (t TLogger) Errorf(format string, args ...interface{}) {
 }
 
 func prettyJsonPrint(something interface{}) string {
-	j, err := json.MarshalIndent(something, "", "\t")
+	j, err := json.MarshalIndent(something, "", "  ")
 	CheckErr(err)
 	return string(j)
 }
