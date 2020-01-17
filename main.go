@@ -81,8 +81,10 @@ func printRequest(r http.Request) string {
 	res += "METHOD = " + r.Method + "\n"
 	res += fmt.Sprintf("======%s================================\n", "URL")
 	res += r.URL.String() + "\n"
-	res += fmt.Sprintf("======%s================================\n", "QUERY PARAMS")
-	res += prettyJsonPrint(r.URL.Query()) + "\n"
+	if len(r.URL.Query()) > 0 {
+		res += fmt.Sprintf("======%s================================\n", "QUERY PARAMS")
+		res += prettyJsonPrint(r.URL.Query()) + "\n"
+	}
 	res += fmt.Sprintf("======%s================================\n", "BODY")
 	res += printReaderContentJSON(r.Body) + "\n"
 	return res
