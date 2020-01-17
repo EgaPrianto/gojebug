@@ -63,9 +63,13 @@ func PrintReaderContent(reader io.Reader) string {
 
 func printReaderContentJSON(reader io.Reader) string {
 	var res map[string]interface{}
-	err := json.Unmarshal([]byte(printReaderContent(reader)), &res)
-	CheckErr(err)
-	return prettyJsonPrint(res)
+	bodyString := printReaderContent(reader)
+	if bodyString != "" {
+		err := json.Unmarshal([]byte(bodyString), &res)
+		CheckErr(err)
+		return prettyJsonPrint(res)
+	}
+	return ""
 }
 
 func PrintReaderContentJSON(reader io.Reader) string {
