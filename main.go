@@ -66,7 +66,9 @@ func printReaderContentJSON(reader io.Reader) string {
 	bodyString := printReaderContent(reader)
 	if bodyString != "" {
 		err := json.Unmarshal([]byte(bodyString), &res)
-		CheckErr(err)
+		if err != nil {
+			return bodyString
+		}
 		return prettyJsonPrint(res)
 	}
 	return ""
